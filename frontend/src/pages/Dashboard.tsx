@@ -9,35 +9,40 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { phaseInfo } from "@/Data/PhaseInfo"
 import Advices from "@/components/Advices"
 import Phases from "@/components/Phases"
+import { getCycleInfo } from "@/main"
+import { Link } from "react-router-dom"
 
-// Mock data - in a real app, this would come from an API or database
+
+
 const userData = {
-  name: "Sarah",
-  avatar: "/placeholder.svg?height=40&width=40",
-  lastPeriod: "2024-06-01",
-  cycleLength: 28,
-  currentPhase: "follicular", // menstrual, follicular, ovulation, luteal
-  currentCycleDay: 22,
-  nextPeriod: "2024-06-29",
-  upcomingPhases: [
-    { name: "Menstrual", startDate: "2024-06-29", endDate: "2024-07-04", daysUntil: 17 },
-    { name: "Follicular", startDate: "2024-07-05", endDate: "2024-07-12", daysUntil: 23 },
-    { name: "Ovulation", startDate: "2024-07-13", endDate: "2024-07-15", daysUntil: 31 },
-    { name: "Luteal", startDate: "2024-07-16", endDate: "2024-07-28", daysUntil: 34 },
-  ],
+  id:1,
+  name: "Asmi",
+  // currentPhase: "follicular", // menstrual, follicular, ovulation, luteal
+  // currentCycleDay: 22,
+  startDate:"2025-06-02",
+  endDate:"2025-06-02"
 }
 
 
 
 export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState("overview")
+  const [activeTab, setActiveTab] = useState("overview");
+  
+  const   nextPeriod= "2024-06-29";
+  const   cycleLength= 28;
+  const   avatar= "/placeholder.svg?height=40&width=40";
+
+  const infoCycle = getCycleInfo(userData);
+  console.log(getCycleInfo(userData));
+
+
 
   // Get current phase information
-  const currentPhaseInfo = phaseInfo[userData.currentPhase as keyof typeof phaseInfo]
+  const currentPhaseInfo = phaseInfo[infoCycle.currentPhase as keyof typeof phaseInfo]
   const PhaseIcon = currentPhaseInfo.icon
 
   // Calculate cycle progress
-  const cycleProgress = Math.round((userData.currentCycleDay / userData.cycleLength) * 100)
+  const cycleProgress = Math.round((infoCycle.currentCycleDay / cycleLength) * 100)
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
@@ -53,10 +58,12 @@ export default function Dashboard() {
             </span>
           </div>
           <div className="flex items-center gap-3">
+            <Link to={`/profile/${userData.id}`}>
             <Avatar>
-              <AvatarImage src={userData.avatar || "/placeholder.svg"} alt={userData.name} />
+              <AvatarImage src={avatar || "/placeholder.svg"} alt={userData.name} />
               <AvatarFallback>{userData.name.charAt(0)}</AvatarFallback>
             </Avatar>
+            </Link>
           </div>
         </div>
       </header>
@@ -92,7 +99,7 @@ export default function Dashboard() {
                       <span>You're in your {currentPhaseInfo.title}</span>
                     </CardTitle>
                     <CardDescription className="mt-1">
-                      Day {userData.currentCycleDay} of your {userData.cycleLength}-day cycle
+                      Day {infoCycle.currentCycleDay} of your {cycleLength}-day cycle
                     </CardDescription>
                   </div>
                   <Badge className={`${currentPhaseInfo.bgColor} ${currentPhaseInfo.color}`}>Current Phase</Badge>
@@ -125,7 +132,7 @@ export default function Dashboard() {
                   <div className="bg-pink-50 p-4 rounded-lg">
                     <div className="text-sm text-gray-600">Last Period Started</div>
                     <div className="font-medium">
-                      {new Date(userData.lastPeriod).toLocaleDateString("en-US", {
+                      {new Date(userData.startDate).toLocaleDateString("en-US", {
                         month: "long",
                         day: "numeric",
                         year: "numeric",
@@ -135,7 +142,7 @@ export default function Dashboard() {
                   <div className="bg-pink-50 p-4 rounded-lg">
                     <div className="text-sm text-gray-600">Next Period Expected</div>
                     <div className="font-medium">
-                      {new Date(userData.nextPeriod).toLocaleDateString("en-US", {
+                      {new Date(nextPeriod).toLocaleDateString("en-US", {
                         month: "long",
                         day: "numeric",
                         year: "numeric",
@@ -177,44 +184,13 @@ export default function Dashboard() {
           {/* Phases Tab */}
           <TabsContent value="phases" className="space-y-6">
             {/* Cycle Visualization */}
-<Phases  />
-{/* <Card>
-              <CardHeader>
-                <CardTitle>Your Upcoming Phases</CardTitle>
-                <CardDescription>Plan ahead with your predicted cycle phases</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {userData.upcomingPhases.map((phase, index) => {
-                    const phaseKey = phase.name.toLowerCase() as keyof typeof phaseInfo
-                    const info = phaseInfo[phaseKey]
-                    const Icon = info.icon
-
-                    return (
-                      <div key={index} className="flex items-center gap-4 p-3 rounded-lg border">
-                        <div className={`w-10 h-10 rounded-full ${info.bgColor} flex items-center justify-center`}>
-                          <Icon className={`h-5 w-5 ${info.color}`} />
-                        </div>
-                        <div className="flex-1">
-                          <div className="font-medium">{phase.name} Phase</div>
-                          <div className="text-sm text-gray-600">
-                            {new Date(phase.startDate).toLocaleDateString("en-US", { month: "short", day: "numeric" })}{" "}
-                            -{new Date(phase.endDate).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
-                          </div>
-                        </div>
-                        <Badge variant="outline">In {phase.daysUntil} days</Badge>
-                      </div>
-                    )
-                  })}
-                </div>
-              </CardContent>
-            </Card> */}
+            <Phases lastStart={userData.startDate} lastEnd={userData.endDate}/>
             
           </TabsContent>
 
           {/* Advice Tab */}
           <TabsContent value="advice" >
-            <Advices currentPhase={userData.currentPhase}/>
+            <Advices currentPhase={infoCycle.currentPhase}/>
           </TabsContent>
         </Tabs>
       </main>
