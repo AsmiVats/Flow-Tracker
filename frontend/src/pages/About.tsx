@@ -1,6 +1,7 @@
 "use client"
 
 import Features from "@/components/Features"
+import Header from "@/components/Header"
 import { Card, CardContent } from "@/components/ui/card"
 import { Heart,  Users, Sparkles } from "lucide-react"
 
@@ -8,6 +9,7 @@ export default function About() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-rose-50 to-emerald-50">
       {/* Header */}
+      <Header/>
       <div className="text-center pt-16 pb-12 px-4">
         <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full mb-6">
           <Heart className="w-10 h-10 text-white" />

@@ -11,14 +11,14 @@ export default function Header() {
               <Heart className="w-4 h-4 text-white" />
             </div>
             <span className="text-xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-              FlowTracker
+              <Link to={"/"}>FlowTracker</Link> 
             </span>
           </div>
           <nav className="hidden md:flex items-center gap-6">
             <a href="#features" className="text-gray-600 hover:text-pink-600 transition-colors">
               Features
             </a>
-            <a href="#about" className="text-gray-600 hover:text-pink-600 transition-colors">
+            <a href="/about" className="text-gray-600 hover:text-pink-600 transition-colors">
               About
             </a>
             <a href="#support" className="text-gray-600 hover:text-pink-600 transition-colors">
