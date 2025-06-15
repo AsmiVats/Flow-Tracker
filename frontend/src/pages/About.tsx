@@ -2,7 +2,7 @@
 
 import Features from "@/components/Features"
 import { Card, CardContent } from "@/components/ui/card"
-import { Heart, Calendar, BarChart3, Shield, Users, Sparkles } from "lucide-react"
+import { Heart,  Users, Sparkles } from "lucide-react"
 
 export default function About() {
   return (

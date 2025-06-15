@@ -4,8 +4,8 @@ type Phase = {
   endDate: string;
   daysUntil: number;
 };
-
-export function calculatePhases(lastPeriodStart: string, lastPeriodEnd: string): Phase[] {
+// function to calculate every upcoming phase dates 
+export function calculatePhases(lastPeriodStart: string): Phase[] {
   const MS_PER_DAY = 1000 * 60 * 60 * 24;
 
   const addDays = (date: Date, days: number) => {
@@ -13,6 +13,7 @@ export function calculatePhases(lastPeriodStart: string, lastPeriodEnd: string):
     newDate.setDate(newDate.getDate() + days);
     return newDate;
   };
+
 
   const format = (date: Date) => date.toISOString().split("T")[0];
 

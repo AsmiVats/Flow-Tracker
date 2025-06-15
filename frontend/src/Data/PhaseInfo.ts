@@ -1,4 +1,4 @@
-import { Calendar, Heart, Droplet, Sun, Moon, Info, AlertCircle, Coffee, Utensils, Dumbbell } from "lucide-react"
+import {  Heart, Droplet, Sun, Moon, Utensils, Dumbbell } from "lucide-react"
 
 export const phaseInfo = {
   menstrual: {

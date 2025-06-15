@@ -1,5 +1,4 @@
 
-import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Progress } from "@/components/ui/progress"
@@ -26,7 +25,7 @@ const userData = {
 
 
 export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState("overview");
+  // const [activeTab, setActiveTab] = useState("overview");
   
   const   nextPeriod= "2024-06-29";
   const   cycleLength= 28;
@@ -77,7 +76,8 @@ export default function Dashboard() {
         </section>
 
         {/* Dashboard Tabs */}
-        <Tabs defaultValue="overview" className="space-y-8" onValueChange={setActiveTab}>
+        {/* <Tabs defaultValue="overview" className="space-y-8" onValueChange={setActiveTab}> */}
+        <Tabs defaultValue="overview" className="space-y-8" >
           <TabsList className="grid grid-cols-3 md:w-[400px]">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="phases">Cycle Phases</TabsTrigger>
@@ -184,7 +184,7 @@ export default function Dashboard() {
           {/* Phases Tab */}
           <TabsContent value="phases" className="space-y-6">
             {/* Cycle Visualization */}
-            <Phases lastStart={userData.startDate} lastEnd={userData.endDate}/>
+            <Phases lastStart={userData.startDate} />
             
           </TabsContent>
 

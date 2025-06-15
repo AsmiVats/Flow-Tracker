@@ -6,11 +6,11 @@ import { calculatePhases } from "@/main"
 
 interface PhasesProps {
   lastStart: string;
-  lastEnd: string;
+  // lastEnd: string;
 }
 
 
-const Phases: React.FC<PhasesProps> = ({ lastStart, lastEnd }) => {
+const Phases: React.FC<PhasesProps> = ({ lastStart }) => {
   //    const  upcomingPhases =  [
   //   { name: "Menstrual", startDate: "2024-06-29", endDate: "2024-07-04", daysUntil: 17 },
   //   { name: "Follicular", startDate: "2024-07-05", endDate: "2024-07-12", daysUntil: 23 },
@@ -20,7 +20,7 @@ const Phases: React.FC<PhasesProps> = ({ lastStart, lastEnd }) => {
 //   const lastStart = "2025-06-02";
 // const lastEnd = "2025-06-07";
 
-const upcomingPhases = calculatePhases(lastStart, lastEnd);
+const upcomingPhases = calculatePhases(lastStart);
 console.log(upcomingPhases);
 
   return (
