@@ -41,11 +41,17 @@ cycleRoute.post('/',async(c)=>{
     const body = await c.req.json();
     console.log(body);
 
+    const convertToDate = (dateString: string) => {
+  const [day, month, year] = dateString.split('-');
+  return new Date(`${year}-${month}-${day}`);
+};
+
+
     try{
         const cycle = await prisma.cycle.create({
             data:{
-                startDate: body.startDate,
-                endDate: body.endDate,
+                startDate: convertToDate(body.startDate),
+                endDate: convertToDate(body.endDate),
                 userId : userId
             }
         });
