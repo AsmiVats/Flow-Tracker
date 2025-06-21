@@ -11,17 +11,17 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   }, 
-  build: {
-    rollupOptions: {
-      external: ['axios'],
-      output: {
-        globals: {
-          axios: 'axios'
-        }
-      }
-    }
-  },
-  optimizeDeps: {
-    include: ['axios']
-  }
+  // build: {
+  //   rollupOptions: {
+  //     external: ['axios'],
+  //     output: {
+  //       globals: {
+  //         axios: 'axios'
+  //       }
+  //     }
+  //   }
+  // },
+  // optimizeDeps: {
+  //   include: ['axios']
+  // }
 })
