@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
 import { userRoute } from './routes/users'
 import { cycleRoute } from './routes/cycle'
+import { cors } from 'hono/cors'
 
 const app = new Hono<{
   Bindings: {
@@ -11,6 +12,9 @@ const app = new Hono<{
 	userId: any;
 	}
 }>();
+
+app.use('/*', cors());
+
 
 app.get('/', (c) => {
   return c.text('Hello Hono!')

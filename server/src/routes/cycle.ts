@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
-import { sign,verify } from 'hono/jwt'
+import { verify } from 'hono/jwt'
 
 
 export const cycleRoute = new Hono<{
@@ -20,7 +20,7 @@ cycleRoute.use('/*', async (c, next) => {
         c.status(401);
         return c.json({ error: "unauthorized" });
     }
-    const token = jwt.split(' ')[1];
+    const token = jwt;
     const payload = await verify(token, c.env.JWT_SECRET);
     if (!payload) {
         c.status(401);
@@ -41,17 +41,17 @@ cycleRoute.post('/',async(c)=>{
     const body = await c.req.json();
     console.log(body);
 
-    const convertToDate = (dateString: string) => {
-  const [day, month, year] = dateString.split('-');
-  return new Date(`${year}-${month}-${day}`);
-};
+//     const convertToDate = (dateString: string) => {
+//   const [day, month, year] = dateString.split('-');
+//   return new Date(`${year}-${month}-${day}`);
+// };
 
 
     try{
         const cycle = await prisma.cycle.create({
             data:{
-                startDate: convertToDate(body.startDate),
-                endDate: convertToDate(body.endDate),
+                startDate: new Date(body.startDate),
+                endDate: new Date(body.endDate),
                 userId : userId
             }
         });
@@ -64,7 +64,48 @@ cycleRoute.post('/',async(c)=>{
         return c.json({message:"error while adding cycle data.",error:e})
     }
 });
+cycleRoute.get('/recent', async (c) => {
+    const userId = c.get('userId');
 
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env?.DATABASE_URL,
+    }).$extends(withAccelerate());
+
+    try {
+        // Find the most recent cycle for this user
+        const recentCycle = await prisma.cycle.findFirst({
+            where: {
+                userId: userId
+            },
+            select:{
+                id:true,
+                userId:true,
+                startDate:true,
+                endDate:true,
+                user:{
+                    select:{
+                        name:true
+                    }
+                }
+            },
+            orderBy: {
+                startDate: 'desc' // Orders by startDate in descending order (newest first)
+            }
+        });
+
+        if (!recentCycle) {
+            return c.json({ message: "No cycles found for this user" }, 404);
+        }
+
+        return c.json(recentCycle);
+    } catch (e) {
+        c.status(500);
+        return c.json({ 
+            message: "Error while fetching recent cycle",
+            error: e instanceof Error ? e.message : "Unknown error" 
+        });
+    }
+});
 cycleRoute.put('/',async(c)=>{
     const userId = c.get('userId');
     const prisma = new PrismaClient({

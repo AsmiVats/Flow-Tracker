@@ -4,9 +4,47 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Heart, Mail, Lock } from "lucide-react"
-import { Link } from "react-router-dom"
+import { Link,useNavigate } from "react-router-dom"
+import { useState } from "react"
+import axios from "axios"
+import { BACKEND_URL } from "@/config"
 
+interface SigninType{
+  email:string,
+  password:string
+}
 export default function Signin() {
+    const navigate = useNavigate();
+  const [formData, setFormData] = useState<SigninType>({
+    email: "",
+    password: "",
+  })
+
+  
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
+
+   const handleSubmit = async(e: React.FormEvent) => {
+    e.preventDefault()
+    console.log("Sign in submitted:", formData)
+    try{
+        const response = await axios.post(`${BACKEND_URL}/api/v1/user/signin`,formData);
+        const jwt = response.data;
+        localStorage.setItem("token",jwt.jwt);
+        navigate("/blog");
+
+    }catch(e){
+      console.log(e);
+    }
+  }
+
+
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-rose-50 to-emerald-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
@@ -24,7 +62,8 @@ export default function Signin() {
             <CardDescription className="text-gray-600">Access your FlowTracker account</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <form className="space-y-4">
+
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-gray-700 font-medium">
                   Email Address
@@ -34,7 +73,9 @@ export default function Signin() {
                   <Input
                     id="email"
                     type="email"
+                    name="email"
                     placeholder="Enter your email"
+                     onChange={handleInputChange}
                     className="pl-10 border-pink-200 focus:border-pink-400 focus:ring-pink-400"
                     required
                   />
@@ -53,6 +94,8 @@ export default function Signin() {
                   <Input
                     id="password"
                     type="password"
+                     onChange={handleInputChange}
+                     name="password"
                     placeholder="Enter your password"
                     className="pl-10 border-pink-200 focus:border-pink-400 focus:ring-pink-400"
                     required

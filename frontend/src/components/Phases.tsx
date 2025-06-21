@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { calculatePhases } from "@/main"
 
 interface PhasesProps {
-  lastStart: string;
+  lastStart: Date;
   // lastEnd: string;
 }
 

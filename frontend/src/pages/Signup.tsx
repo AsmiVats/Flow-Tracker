@@ -8,12 +8,68 @@ import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { CalendarDays, Heart, User, Mail, Lock, CalendarIcon } from "lucide-react"
 import { format } from "date-fns"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import axios from "axios"
+import { BACKEND_URL } from "@/config"
+
+interface SignupType{
+  name:string,
+  email:string,
+  password:string,
+}
 
 export default function SignUp() {
+  const navigate = useNavigate();
   const [startDate, setStartDate] = useState<Date>()
   const [endDate, setEndDate] = useState<Date>()
 
+  const [formData,setFormData] = useState<SignupType>({
+    name:"",
+    email:"",
+    password:"",
+  });
+
+  const handleInputChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
+    const {name,value} = e.target
+    setFormData((prev)=>({
+      ...prev,
+      [name]:value,
+    }))
+  };
+
+  const handleSignupSubmit = async(e:React.FormEvent)=>{
+    e.preventDefault();
+      try{
+        const res = await axios.post(`${BACKEND_URL}/api/v1/user/signup`,formData);
+        const jwt = res.data;
+        localStorage.setItem("token",jwt.jwt);
+        alert("Signed up successfully");
+      }catch(e){
+        console.log(e);
+      }
+  };
+
+  const handleCycleSubmit = async(e:React.FormEvent)=>{
+    e.preventDefault();
+    console.log({
+      startDate,
+      endDate
+    })
+    try{
+      const res = await axios.post(`${BACKEND_URL}/api/v1/cycle`,{
+        startDate,
+        endDate
+      },{
+        headers:{
+          Authorization:localStorage.getItem("token"),
+        }
+      });
+      console.log(res.data);
+      navigate("/dashboard");
+    }catch(e){
+      console.log(e);
+    }
+  }
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-rose-50 to-emerald-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
@@ -33,7 +89,7 @@ export default function SignUp() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <form className="space-y-4">
+            <form onSubmit={handleSignupSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="name" className="text-gray-700 font-medium">
                   Full Name
@@ -43,6 +99,8 @@ export default function SignUp() {
                   <Input
                     id="name"
                     placeholder="Enter your full name"
+                    name="name"
+                    onChange={handleInputChange}
                     className="pl-10 border-pink-200 focus:border-pink-400 focus:ring-pink-400"
                     required
                   />
@@ -59,6 +117,8 @@ export default function SignUp() {
                     id="email"
                     type="email"
                     placeholder="Enter your email"
+                    name="email"
+                    onChange={handleInputChange}
                     className="pl-10 border-pink-200 focus:border-pink-400 focus:ring-pink-400"
                     required
                   />
@@ -73,7 +133,9 @@ export default function SignUp() {
                   <Lock className="absolute left-3 top-3 h-4 w-4 text-pink-400" />
                   <Input
                     id="password"
+                    name="password"
                     type="password"
+                    onChange={handleInputChange}
                     placeholder="Create a secure password"
                     className="pl-10 border-pink-200 focus:border-pink-400 focus:ring-pink-400"
                     required
@@ -81,7 +143,18 @@ export default function SignUp() {
                 </div>
               </div>
 
-              <div className="border-t border-pink-100 pt-6">
+
+              <Button
+                type="submit"
+                className="w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-semibold py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200"
+              >
+                Create My Account
+              </Button>
+            </form>
+
+
+            <form onSubmit={handleCycleSubmit} className="space-y-4">
+                  <div className="border-t border-pink-100 pt-6">
                 <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
                   <CalendarDays className="w-5 h-5 text-pink-500 mr-2" />
                   Current Cycle Information
@@ -140,17 +213,15 @@ export default function SignUp() {
                   </div>
                 </div>
 
-                <p className="text-xs text-gray-500 mt-3">
+                <p className="text-xs text-gray-500 my-3">
                   {"You can always update this later in your profile."}
                 </p>
+                <Button type="submit"
+                className="w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-semibold py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200">
+                    Submit Details
+                  </Button>
               </div>
 
-              <Button
-                type="submit"
-                className="w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-semibold py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200"
-              >
-                Create My Account
-              </Button>
             </form>
 
             <div className="text-center pt-4 border-t border-pink-100">

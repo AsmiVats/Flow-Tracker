@@ -8,31 +8,34 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { phaseInfo } from "@/Data/PhaseInfo"
 import Advices from "@/components/Advices"
 import Phases from "@/components/Phases"
-import { getCycleInfo } from "@/main"
+import { getCycleInfo, getNextExpectedPeriod } from "@/main"
 import { Link } from "react-router-dom"
-
-
-
-const userData = {
-  id:1,
-  name: "Asmi",
-  // currentPhase: "follicular", // menstrual, follicular, ovulation, luteal
-  // currentCycleDay: 22,
-  startDate:"2025-06-02",
-  endDate:"2025-06-02"
-}
-
+import { userRecentCycle } from "@/hooks"
+import { Loader } from "@/components/Loader"
 
 
 export default function Dashboard() {
   // const [activeTab, setActiveTab] = useState("overview");
-  
-  const   nextPeriod= "2024-06-29";
+  const {loading,cycle} = userRecentCycle();
+
+  if(loading || !cycle){
+    return (
+      <Loader/>
+    )
+  }
+   const userData = {
+    id: cycle.id,
+    name: cycle.user?.name || "User",
+    startDate: new Date(cycle.startDate),
+    endDate: new Date(cycle.endDate)
+  };
+
+  const   nextPeriod= getNextExpectedPeriod(userData.startDate);
   const   cycleLength= 28;
   const   avatar= "/placeholder.svg?height=40&width=40";
 
-  const infoCycle = getCycleInfo(userData);
-  console.log(getCycleInfo(userData));
+  const infoCycle = getCycleInfo(userData.startDate);
+  console.log(getCycleInfo(userData.startDate));
 
 
 
