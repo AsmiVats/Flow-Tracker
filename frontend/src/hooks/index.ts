@@ -17,11 +17,11 @@ export const useCycle = ({id}:{id:string})=>{
     const [cycle,setcycle] = useState<CycleType>();
 
     useEffect(()=>{
-        axios.get(`${BACKEND_URL}/api/v1/cycle/${id}`,{
+        axios.get<CycleType>(`${BACKEND_URL}/api/v1/cycle/${id}`,{
             headers:{
                 Authorization:localStorage.getItem("token")
             }
-        }).then(response=>{
+        }).then((response)=>{
             setcycle(response.data);
             setloading(false);
         })
@@ -38,7 +38,7 @@ export const userRecentCycle=()=>{
     const [cycle,setcycle] = useState<CycleType>();
 
     useEffect(()=>{
-        axios.get(`${BACKEND_URL}/api/v1/cycle/recent`,{
+        axios.get<CycleType>(`${BACKEND_URL}/api/v1/cycle/recent`,{
             headers:{
                 Authorization:localStorage.getItem("token")
             }

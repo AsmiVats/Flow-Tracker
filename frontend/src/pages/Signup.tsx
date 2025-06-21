@@ -18,6 +18,11 @@ interface SignupType{
   password:string,
 }
 
+interface SignupResponse {
+  jwt: string;
+}
+
+
 export default function SignUp() {
   const navigate = useNavigate();
   const [startDate, setStartDate] = useState<Date>()
@@ -40,12 +45,13 @@ export default function SignUp() {
   const handleSignupSubmit = async(e:React.FormEvent)=>{
     e.preventDefault();
       try{
-        const res = await axios.post(`${BACKEND_URL}/api/v1/user/signup`,formData);
+        const res = await axios.post<SignupResponse>(`${BACKEND_URL}/api/v1/user/signup`,formData);
         const jwt = res.data;
         localStorage.setItem("token",jwt.jwt);
         alert("Signed up successfully");
       }catch(e){
         console.log(e);
+        
       }
   };
 

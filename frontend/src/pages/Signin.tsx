@@ -13,6 +13,10 @@ interface SigninType{
   email:string,
   password:string
 }
+interface SigninResponse {
+  jwt: string;
+}
+
 export default function Signin() {
     const navigate = useNavigate();
   const [formData, setFormData] = useState<SigninType>({
@@ -33,7 +37,7 @@ export default function Signin() {
     e.preventDefault()
     console.log("Sign in submitted:", formData)
     try{
-        const response = await axios.post(`${BACKEND_URL}/api/v1/user/signin`,formData);
+        const response = await axios.post<SigninResponse>(`${BACKEND_URL}/api/v1/user/signin`,formData);
         const jwt = response.data;
         localStorage.setItem("token",jwt.jwt);
         navigate("/blog");
