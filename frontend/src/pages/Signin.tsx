@@ -40,7 +40,7 @@ export default function Signin() {
         const response = await axios.post<SigninResponse>(`${BACKEND_URL}/api/v1/user/signin`,formData);
         const jwt = response.data;
         localStorage.setItem("token",jwt.jwt);
-        navigate("/blog");
+        navigate("/dashboard");
 
     }catch(e){
       console.log(e);
