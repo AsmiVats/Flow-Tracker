@@ -10,12 +10,18 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
-  }, build: {
+  }, 
+  build: {
     rollupOptions: {
-      external: ['axios'], // Add this line
-    },
+      external: ['axios'],
+      output: {
+        globals: {
+          axios: 'axios'
+        }
+      }
+    }
   },
   optimizeDeps: {
-    include: ['axios'], // And this line
-  },
+    include: ['axios']
+  }
 })
