@@ -1,6 +1,6 @@
 # Flow Tracker
 
-Flow Tracker is a full-stack application built with a React + TypeScript + Vite frontend and a Node/TypeScript server, designed to help you track and manage flows or tasks efficiently.
+Flow Tracker is a full-stack application designed as a hormonal change tracker for women. The app helps users monitor their menstrual cycles, track hormonal changes, and provides information about their next cycles.
 
 ---
 
@@ -20,16 +20,17 @@ Flow Tracker is a full-stack application built with a React + TypeScript + Vite 
 
 ## Overview
 
-Flow Tracker aims to provide a streamlined solution for managing and visualizing flows, tasks, or any sequential process. The project is split into a modern React frontend (in `frontend/`) and a backend server (in `server/`).
+Flow Tracker empowers women to stay in sync with their bodies by tracking hormonal changes and predicting future cycles. The project is split into a modern React frontend (in `frontend/`) and a backend server (in `server/`).
 
 ---
 
 ## Features
 
+- **Track Hormonal Changes:** Log and monitor hormonal symptoms and phases.
+- **Cycle Prediction:** Get estimates and reminders for your next cycle.
+- **Personalized Insights:** Receive cycle-related tips and alerts.
 - **React + TypeScript Frontend:** Fast, modern UI powered by Vite.
 - **TypeScript Backend:** Scalable API, ready for deployment.
-- **ESLint & Code Quality:** Recommended configuration for both client and server.
-- **Easy Development Workflow:** Simple scripts for development and deployment.
 - **Cloudflare Workers Ready:** Server can be deployed as a Cloudflare Worker.
 
 ---
