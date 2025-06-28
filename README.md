@@ -14,8 +14,6 @@ Flow Tracker is a full-stack application designed as a hormonal change tracker f
 - [Backend (Server)](#backend-server)
 - [Development](#development)
 - [Deployment](#deployment)
-- [License](#license)
-
 ---
 
 ## Overview
@@ -114,11 +112,7 @@ npm run cf-typegen
 - Both `frontend` and `server` directories have their own `README.md` for deeper technical details.
 - Use the scripts provided in each directory for development, testing, and deployment.
 
----
 
-## License
-
-MIT
 
 ---
 
@@ -129,12 +123,6 @@ MIT
 - [TypeScript](https://www.typescriptlang.org/)
 - [Cloudflare Workers](https://developers.cloudflare.com/workers/)
 - [Hono](https://hono.dev/)
-
----
-
-## Contributing
-
-Pull requests and issues are welcome!
 
 ---
 
